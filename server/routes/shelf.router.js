@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
       pool.query(queryText, [req.user.id]).then((result) => {
       res.send(result.rows);
     }).catch((e) => {
-      console.log(e);
+      console.error('Error in GET', e);
       res.sendStatus(500);
   });
     } else {
@@ -36,6 +36,18 @@ router.get('/', (req, res) => {
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
+  if (req.isAuthenticated()) {
+    let queryText = `
+    INSERT INTO "item" ("description", "image_url", "user_id")
+    VALUES ($1, $2, $3);
+    `;
+    pool.query(queryText, [req.body.description, req.body.image_url, req.user.id]).then((result) => {
+      res.sendStatus(200);
+    }).catch((e) => {
+      console.error('Error in POST', e);
+      res.sendStatus(500);
+    })
+  }
   // endpoint functionality
 });
 
