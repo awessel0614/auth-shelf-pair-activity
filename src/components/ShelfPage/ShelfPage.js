@@ -81,7 +81,7 @@ function ShelfPage() {
   const [newItemDescription, setNewItemDescription] = useState("")
   const [newItemURL, setNewItemURL] = useState("")
 
-
+  
 
   const addItem = (event) => {
     event.preventDefault();
@@ -94,17 +94,28 @@ function ShelfPage() {
         console.log('Item successfully added!', newItem)
         setNewItemDescription("");
         setNewItemURL("");
+        fetchShelf();
       }).catch((error) => {
         console.error('Error in POST to /api/shelf', error);
         alert("Something has gone wrong!");
       })
       
-      fetchShelf();
+      
   }
 
-  useEffect(() => {
-    fetchShelf();
-  }, []);
+
+  const deleteItem = (event, id) => {
+    event.preventDefault();
+    axios.delete(`/api/shelf/${id}`)
+      .then((response) => {
+        fetchShelf();
+      }).catch((error) => {
+        console.error(error);
+        alert('Something went wrong!');
+      })
+  }
+
+  
 
   const fetchShelf = () => {
     axios.get('/api/shelf').then((response) => {
@@ -114,6 +125,10 @@ function ShelfPage() {
       alert('Something went wrong.');
     });
   }
+
+  useEffect(() => {
+    fetchShelf();
+  }, []);
 
 
   return (
@@ -133,7 +148,7 @@ function ShelfPage() {
                         <br />
                         <div className="desc">{item.description}</div>
                         <div style={{textAlign: 'center', padding: '5px'}}>
-                          <button style={{cursor: 'pointer'}}>Delete</button>
+                          <button style={{cursor: 'pointer'}} onClick={event => deleteItem(event, item.id)}>Delete</button>
                         </div>
                     </div>
                  </div>
