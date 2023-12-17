@@ -5,17 +5,30 @@ const router = express.Router();
 /**
  * Get all of the items on the shelf
  */
+// router.get('/', (req, res) => {
+//   let queryText = `SELECT * FROM "item"`;
+//   pool.query(queryText).then((result) => {
+//     res.send(result.rows);
+//   }).catch((error) => {
+//     console.log(error);
+//     res.sendStatus(500);
+//   });
+// });
+
+
 router.get('/', (req, res) => {
-  let queryText = `SELECT * FROM "item"`;
-  pool.query(queryText).then((result) => {
-    res.send(result.rows);
-  }).catch((error) => {
-    console.log(error);
-    res.sendStatus(500);
+    if (req.isAuthenticated()) {
+      let queryText = `SELECT * FROM "item" WHERE "user_id" =$1;`;
+      pool.query(queryText, [req.user.id]).then((result) => {
+      res.send(result.rows);
+    }).catch((e) => {
+      console.log(e);
+      res.sendStatus(500);
   });
+    } else {
+      res.sendStatus(401);
+    }
 });
-
-
 
 
 
