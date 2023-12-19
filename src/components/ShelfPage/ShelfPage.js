@@ -8,7 +8,6 @@ function ShelfPage() {
   const [newItemURL, setNewItemURL] = useState("")
 
   
-
   const addItem = (event) => {
     event.preventDefault();
     let newItem = {
@@ -25,8 +24,6 @@ function ShelfPage() {
         console.error('Error in POST to /api/shelf', error);
         alert("Something has gone wrong!");
       })
-      
-      
   }
 
 
@@ -41,7 +38,6 @@ function ShelfPage() {
       })
   }
 
-  
 
   const fetchShelf = () => {
     axios.get('/api/shelf').then((response) => {
@@ -51,7 +47,6 @@ function ShelfPage() {
       alert('Something went wrong.');
     });
   }
-
   useEffect(() => {
     fetchShelf();
   }, []);
@@ -98,11 +93,7 @@ function ShelfPage() {
         />
         <br></br>
         <button type='submit'>Submit</button>  
-        
-        
       </form>
-
-
 
       <div className="clearfix"></div>
     </div>

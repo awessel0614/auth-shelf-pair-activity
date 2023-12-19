@@ -39,7 +39,6 @@ router.post('/', (req, res) => {
   } else {
     res.sendStatus(401);
   }
-  // endpoint functionality
 });
 
 
@@ -48,7 +47,6 @@ router.post('/', (req, res) => {
  * Delete an item
  */
 router.delete('/:id', (req, res) => {
-
   if (req.isAuthenticated()) {
     let queryText = `
       DELETE FROM "item" WHERE "id" = $1;
